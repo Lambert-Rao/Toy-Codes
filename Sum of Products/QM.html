@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Quine-McCluskey算法化简布尔表达式</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin: 10px;
+      width: 300px;
+    }
+
+    input[type="submit"] {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      background-color: #1e90ff;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 300px;
+      text-align: center;
+      margin: 0 auto;
+    }
+  </style>
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+  <script type="text/javascript"
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+</head>
+<body>
+<h1>Quine-McCluskey算法化简布尔表达式</h1>
+<form onsubmit="event.preventDefault(); simplifyExpression();">
+  <label for="input1">输入布尔表达式：</label>
+  <p>
+    $$Y=\Sigma m(\text {minterms})+d(\text {don't cares})$$
+    minterms =<input type="text" id="input1" placeholder="例如：0，3，4，5" style="vertical-align: middle"
+                     pattern="^(?!.*(\b\d+\b).*\b\1\b)(\d+,)*\d+$">
+    <br>
+    don't cares =<input type="text" id="input2" placeholder="例如：6，7" style="vertical-align: middle;"
+                        pattern="^(?!.*(\b\d+\b).*\b\1\b)(\d+,)*\d+$">
+    <br>
+    请只使用英文字符的数字和逗号，不允许重复。
+  </p>
+
+  <input type="submit" value="化简">
+
+</form>
+
+<span id="result">$$LaTeX $$</span>
+<script>
+  function simplifyExpression() {
+    var input1 = document.getElementById("input1").value;
+    var input2 = document.getElementById("input2").value;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "api/sum_of_products/&" + input1 +","+ input2 +"&" , true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4
+              && xhr.status === 200) {
+        var result = document.getElementById("result");
+        result.innerHTML = xhr.responseText;
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "result"]);
+      }
+    };
+    xhr.send();
+  }
+</script>
+
+</body>
+</html>
