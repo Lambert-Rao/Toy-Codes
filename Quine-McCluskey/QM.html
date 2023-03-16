@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 
 <head>
   <title>Quine-McCluskey算法化简布尔表达式</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/Lambert-Rao/image_host/main/img/202303162046979.ico">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -39,8 +40,7 @@
     #result {
       margin-top: 20px;
       padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      border: none;
       width: 300px;
       text-align: center;
       margin: 0 auto;
@@ -72,13 +72,13 @@
 
 </form>
 
-<span id="result">$$LaTeX $$</span>
+<p id="result">$$LaTeX$$</p>
 <script>
   function simplifyExpression() {
     var input1 = document.getElementById("input1").value;
     var input2 = document.getElementById("input2").value;
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "api/sum_of_products/&" + input1 +","+ input2 +"&" , true);
+    xhr.open("GET", "api/quine_mccluskey/&" + input1 +","+ input2 , true);
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4
               && xhr.status === 200) {

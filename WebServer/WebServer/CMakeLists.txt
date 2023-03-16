@@ -10,9 +10,8 @@ set(SRCS
     #ThreadPool.cpp
     Timer.cpp
     Util.cpp
-        user_api.cpp
-        sum_of_products.cpp
-        )
+    user_api.cpp
+    quine_mccluskey.cpp)
 include_directories(${PROJECT_SOURCE_DIR}/base)
 
 
@@ -21,4 +20,3 @@ target_link_libraries(WebServer libserver_base)
 
 
 add_subdirectory(base)
-add_subdirectory(tests)
