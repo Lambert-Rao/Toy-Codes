@@ -8,7 +8,6 @@
 #include <sstream>
 #include "quine_mccluskey.h"
 
-bool state = true;
 string message = "$$\\mathbb{ERROR}$$";
 
 using namespace std;
@@ -20,7 +19,7 @@ string Util::intToBinString(int size, int val){
     return bin;
 }
 
-int Util::get1s(string x) {
+int Util::get1s(const string& x) {
     // returns the number of 1s in a binary string
     int count = 0;
     for (char i : x){
@@ -54,9 +53,9 @@ string Util::getDiff(string a, string b) {
     return a;
 }
 
-bool Util::checkEmpty(vector< vector< string> > table){
-    for (int i = 0; i < table.size(); ++i){
-        if (!table[i].empty()) {
+bool Util::checkEmpty(const vector< vector< string> >& table){
+    for (const auto & i : table){
+        if (!i.empty()) {
             return false;
         }
     }
@@ -76,34 +75,21 @@ bool Util::primeIncludes(string imp, string minTerm){
     return true;
 }
 
-int Util::getVar(set<int> comb, vector<string> primeImp){
+int Util::getVar(const set<int>& comb, vector<string> primeImp){
     // returns the number of variables in a petrick method combination
     int count = 0;
     set<int> :: iterator itr;
     for (itr = comb.begin(); itr != comb.end(); ++itr){
         int imp = *itr;
-        for (int i = 0; i < primeImp[imp].size(); ++i){
-            if (primeImp[imp][i]!='-')
+        for (char i : primeImp[imp]){
+            if (i!='-')
                 count ++;
         }
     }
     return count;
 
 }
-string Util::toLaTeX(string bin) {
-    string expr;
-    for (int i = bin.size() - 1; i >= 0; i--) {
-        if (bin[i] == '0') {
-            expr += "\\overline{X_{" + to_string(bin.size() - 1 - i) + "}}";
-        } else if (bin[i] == '1') {
-            expr += "X_{" + to_string(bin.size() - 1 - i)+ "}";
-        }
-        if (*expr.end()!=';') {
-            expr += " \\;";
-        }
-    }
-    return expr;
-}
+
 string Util::bin_to_latex(string x){
     // converts binary string to LaTeX expression
     string expr ;
@@ -130,12 +116,13 @@ vector<int> Util::getSet(string bin) {
                 i++;
             }
             try {
+                int num = stoi(numStr);
+                if(std::count(set->begin(), set->end(),num)==0)
                 set->push_back(stoi(numStr));
             }
             catch (std::out_of_range& e) {
-                state = false;
                 message = "$$\\mathbb{ERROR}:\\text{Number out of range}$$";
-                continue;
+                throw e;
             }
         }
         else if(bin[i] == '&') {
@@ -146,19 +133,20 @@ vector<int> Util::getSet(string bin) {
 }
 
 
-
+//true when everything is ok, false when special situation
 bool Tabulation::initialise(string request)
 {
     minInt = Util::getSet(std::move(request));
-    if(!state)
-        return false;
     nMin = minInt.size();
     {
         int max = *(max_element(minInt.begin(), minInt.end()));
         if (max == 0)
             nBits = 1;
         else if(max > 1073741824)
+        {
+            message = "$$\\mathbb{ERROR}:\\text{Number out of range}$$";
             return false;
+        }
         else
             nBits = static_cast<int>(log2(max) + 1);
     }
@@ -194,7 +182,7 @@ void Tabulation::setPrimeImp() {
 
     set<string > :: iterator itr;  // convert set to vector
     for (itr = primeImpTemp.begin(); itr != primeImpTemp.end(); ++itr){
-        string x = *itr;
+        const string& x = *itr;
         primeImp.push_back(x);
     }
 
@@ -243,10 +231,10 @@ void Tabulation::minimise() {
         patLogic.push_back(x);
     }
 //    cout << "\nPetric logic is (row: minterms no., col: prime implicants no.): " << endl;
-    for (int i = 0; i < patLogic.size(); ++i){
+    for (const auto & i : patLogic){
         set<int > :: iterator itr;  // convert set to vector
-        for (itr = patLogic[i].begin(); itr != patLogic[i].end(); ++itr){
-            int x = *itr;
+        for (itr = i.begin(); itr != i.end(); ++itr){
+//            int x = *itr;
 //            cout << x << " ";
         }
 //        cout << endl;
@@ -397,19 +385,24 @@ void Tabulation::createTable() {
 //            cout << endl;
 //        }
 }
-
+//入口函数
 string  Quine_McCluskey(const string& request)  {
 //        cout << request << endl;
-    state = true;
-    Tabulation tab;
-    if(!tab.initialise(request))
-        return message;
-    tab.initialise(request);
-    tab.setPrimeImp();
-    tab.minimise();
-    tab.displayFunctions();
-    if(state)
+//set default message
+    message = "$$\\mathbb{ERROR}$$";
+    try
+    {
+        Tabulation tab;
+        if (!tab.initialise(request))
+            return message;
+        tab.initialise(request);
+        tab.setPrimeImp();
+        tab.minimise();
+        tab.displayFunctions();
         return "$$"+tab.getResult()+"$$";
-    else
+    }
+    catch (const std::exception& e)
+    {
         return message;
+    }
 }

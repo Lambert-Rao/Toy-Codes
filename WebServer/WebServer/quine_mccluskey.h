@@ -23,19 +23,17 @@ class Util{
 private:
     static string intToBinString(int size, int val);
 
-    static int get1s(string x) ;
+    static int get1s(const string& x) ;
 
     static bool compare(string a, string b) ;
 
     static string getDiff(string a, string b) ;
 
-    static bool checkEmpty(vector< vector< string> > table);
+    static bool checkEmpty(const vector< vector< string> >& table);
 
     static bool primeIncludes(string imp, string minTerm);
 
-    static int getVar(set<int> comb, vector<string> primeImp);
-
-    static string toLaTeX(string bin) ;
+    static int getVar(const set<int>& comb, vector<string> primeImp);
 
     static vector<int> getSet(string bin);
 
