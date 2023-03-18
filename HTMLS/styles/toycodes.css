@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+h1 {
+    margin: 0;
+    font-size: 36px;
+}
+#boxContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+    width: 100%;
+    gap: 5px;
+}
+div[data-text] {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+div[data-text]:hover span[data-hover] {
+    opacity: 1;
+    transform: translateY(0);
+}
+span[data-text], span[data-hover] {
+    position: absolute;
+    transition: all 0.2s ease;
+}
+span[data-text] {
+    z-index: 1;
+}
+span[data-hover] {
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(100%);
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 100%;
+    text-align: center;
+}
