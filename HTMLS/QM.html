@@ -77,6 +77,10 @@
   function simplifyExpression() {
     var input1 = document.getElementById("input1").value;
     var input2 = document.getElementById("input2").value;
+    if (input1.trim() === "" && input2.trim() === "") {
+      alert("输入不能为空");
+      return false;
+    }
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "api/quine_mccluskey/&" + input1 +","+ input2 , true);
     xhr.onreadystatechange = function() {
