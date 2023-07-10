@@ -35,3 +35,10 @@ _deps
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+/HTMLS/.idea/.gitignore
+/.idea/.name
+/.idea/deployment.xml
+/HTMLS/.idea/HTMLS.iml
+/.idea/misc.xml
+/HTMLS/.idea/modules.xml
+/HTMLS/.idea/vcs.xml
